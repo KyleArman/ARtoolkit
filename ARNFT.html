@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chocobo AR</title>
+    <!-- Include AR.js loader script -->
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@1.8.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jeromeetienne/ar.js@2.3.2/build/ar.js"></script>
+
+    <style>
+        .arjs-loader {
+          height: 100vh;
+          width: 100vw;
+          position: fixed;
+          top: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.8);
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      
+        .arjs-loader div {
+          text-align: center;
+          font-size: 1.25em;
+          color: white;
+        }
+      </style>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <div class="arjs-loader">
+        <div id="loadingMessage">Loading, please wait...</div>
+    </div>
+
+    <a-scene embedded arjs="trackingMethod: best;">
+        <a-nft
+            type="nft"
+            url="https://kylearman.github.io/ARtoolkit/Chocobo"
+            smooth="true"
+            smoothCount="10"
+            smoothTolerance=".01"
+            smoothThreshold="5">
+            <a-box position="0 0.5 0" material="color: red;"></a-box>
+            <a-entity
+                gltf-model="https://kylearman.github.io/ARtoolkit/Chocobo.glb"
+                scale="0.1 0.1 0.1"
+                position="0 0.5 0"
+                rotation="0 180 0">
+            </a-entity>
+        </a-nft>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Script to hide loader when AR content is loaded -->
+    <script>
+        // Function to hide loader and display message when AR.js is loaded
+        function onARLoaded() {
+            document.querySelector('.arjs-loader').style.display = 'none';
+            document.getElementById('loadingMessage').innerText = 'AR.js Loaded!';
+        }
+
+        // Listen for the arjs-video-loaded event to detect when AR.js is loaded
+        window.addEventListener('arjs-video-loaded', onARLoaded);
+    </script>
+</body>
+</html>
