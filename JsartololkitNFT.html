@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chocobo AR</title>
+    <!-- Include AR.js loader script -->
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@1.8.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jeromeetienne/ar.js@2.3.2/build/ar.js"></script>
+
+    <style>
+        .arjs-loader {
+          height: 100vh;
+          width: 100vw;
+          position: fixed;
+          top: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.8);
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      
+        .arjs-loader div {
+          text-align: center;
+          font-size: 1.25em;
+          color: white;
+        }
+      </style>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <div id="loading">
+        <img alt="jsartoolkitNFT logo" src="Data/JsartoolkitNFT-logo.gif">
+        <span class="loading-text">Loading, please wait</span>
+    </div>
+
+    <div id="stats" class="ui stats">
+        <div id="stats1" class="stats-item">
+          <p class="stats-item-title">
+            Main
+          </p>
+        <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
+    
+        <div id="stats2" class="stats-item">
+          <p class="stats-item-title">
+            Worker
+          </p>
+        <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
+      </div>
+
+      <div id="app">
+		<video loop="" autoplay="" muted="" playsinline="" id="video">
+		</video>
+		<canvas id="canvas"></canvas>
+	</div>
+
+    <script src="../resources/ARToolkitNFT.js"></script>
+    <script src="../resources/stats.min.js"></script>
+    <script src="../resources/three.min.js"></script>
+    <script src="index.js"></script>
+    <script src="threejs_worker_ES6.js"></script>
+
+    <script>
+        /**
+        * STATS
+        */
+        var statsMain = new Stats();
+        statsMain.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.getElementById( 'stats1' ).appendChild( statsMain.dom );
+      
+        var statsWorker = new Stats();
+        statsWorker.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.getElementById( 'stats2' ).appendChild( statsWorker.dom );
+      
+        window.addEventListener('load', () => {
+          console.log('init ARToolkitNFT...');
+          initCamera()
+          .then(video => {
+      
+          // start camera playback
+          sourceVideo = video;
+          sourceVideo.width = 640;
+          sourceVideo.height = 480;
+          sourceVideo.play();
+      
+          // init target canvas
+          initTargetCanvas();
+      
+          return new Promise(resolve => {
+            sourceVideo.addEventListener("loadeddata", event => {
+              console.log("Camera is ready");
+              resolve();
+            });
+          });
+        })
+        .then(_ => {
+      
+          start('../resources/dataNFT/pinball', video, video.videoWidth, video.videoHeight, function() { statsMain.update() }, function() { statsWorker.update() })
+      
+          });
+        })
+        </script>
+
+
+
+</body>
+</html>
