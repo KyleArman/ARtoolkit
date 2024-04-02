@@ -31,78 +31,82 @@
         }
       </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <div id="loading">
-        <img alt="jsartoolkitNFT logo" src="Data/JsartoolkitNFT-logo.gif">
-        <span class="loading-text">Loading, please wait</span>
-    </div>
+<body>
+  <div id="loading">
+    <img alt="jsartoolkitNFT logo" src="https://kalwalt.github.io/kalwalt-interactivity-AR/jsartoolkitNFT/Data/JsartoolkitNFT-logo.gif">
+    <span class="loading-text">Loading, please wait</span>
+  </div>
+  <!--
+  ==================
+  STATS
+  ==================
+  -->
+  <div id="stats" class="ui stats">
+    <div id="stats1" class="stats-item">
+      <p class="stats-item-title">
+        Main
+      </p>
+    <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
 
-    <div id="stats" class="ui stats">
-        <div id="stats1" class="stats-item">
-          <p class="stats-item-title">
-            Main
-          </p>
-        <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
-    
-        <div id="stats2" class="stats-item">
-          <p class="stats-item-title">
-            Worker
-          </p>
-        <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
-      </div>
+    <div id="stats2" class="stats-item">
+      <p class="stats-item-title">
+        Worker
+      </p>
+    <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
+  </div>
 
-      <div id="app">
+	<div id="app">
 		<video loop="" autoplay="" muted="" playsinline="" id="video">
 		</video>
 		<canvas id="canvas"></canvas>
 	</div>
+  <script src="https://kylearman.github.io/ARtoolkit/ARToolkitNFT.js"></script>
+  <script src="https://kylearman.github.io/ARtoolkit/stats.min.js"></script>
+  <script src="https://kylearman.github.io/ARtoolkit/three.min.js"></script>
+  <script src="https://kylearman.github.io/ARtoolkit/index.js"></script>
+  <script src="https://kylearman.github.io/ARtoolkit/threejs_worker_ES6.js"></script>
 
-    <script src="https://kylearman.github.io/ARtoolkit/ARToolkitNFT.js"></script>
-    <script src="https://kylearman.github.io/ARtoolkit/resources/stats.min.js"></script>
-    <script src="https://kylearman.github.io/ARtoolkit/resources/three.min.js"></script>
-    <script src="https://kylearman.github.io/ARtoolkit/index.js"></script>
-    <script src="https://kylearman.github.io/ARtoolkit/threejs_worker_ES6.js"></script>
+  <script>
+  /**
+  * STATS
+  */
+  var statsMain = new Stats();
+  statsMain.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.getElementById( 'stats1' ).appendChild( statsMain.dom );
 
-    <script>
-        /**
-        * STATS
-        */
-        var statsMain = new Stats();
-        statsMain.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-        document.getElementById( 'stats1' ).appendChild( statsMain.dom );
-      
-        var statsWorker = new Stats();
-        statsWorker.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-        document.getElementById( 'stats2' ).appendChild( statsWorker.dom );
-      
-        window.addEventListener('load', () => {
-          console.log('init ARToolkitNFT...');
-          initCamera()
-          .then(video => {
-      
-          // start camera playback
-          sourceVideo = video;
-          sourceVideo.width = 640;
-          sourceVideo.height = 480;
-          sourceVideo.play();
-      
-          // init target canvas
-          initTargetCanvas();
-      
-          return new Promise(resolve => {
-            sourceVideo.addEventListener("loadeddata", event => {
-              console.log("Camera is ready");
-              resolve();
-            });
-          });
-        })
-        .then(_ => {
-      
-          start('https://kylearman.github.io/ARtoolkit/pinball', video, video.videoWidth, video.videoHeight, function() { statsMain.update() }, function() { statsWorker.update() })
-      
-          });
-        })
-        </script>
+  var statsWorker = new Stats();
+  statsWorker.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.getElementById( 'stats2' ).appendChild( statsWorker.dom );
+
+  window.addEventListener('load', () => {
+    console.log('init ARToolkitNFT...');
+    initCamera()
+    .then(video => {
+
+    // start camera playback
+    sourceVideo = video;
+    sourceVideo.width = 640;
+    sourceVideo.height = 480;
+    sourceVideo.play();
+
+    // init target canvas
+    initTargetCanvas();
+
+    return new Promise(resolve => {
+      sourceVideo.addEventListener("loadeddata", event => {
+        console.log("Camera is ready");
+        resolve();
+      });
+    });
+  })
+  .then(_ => {
+
+    start('https://kylearman.github.io/ARtoolkit/pinball', video, video.videoWidth, video.videoHeight, function() { statsMain.update() }, function() { statsWorker.update() })
+
+    });
+  })
+  </script>
+
 
 
 
